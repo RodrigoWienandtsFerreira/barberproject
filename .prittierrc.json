@@ -1,0 +1,5 @@
+{
+  "plugins": ["prittier-plugin-tailwindcss"],
+  "tabWidth": 2,
+  "semi": false
+}
