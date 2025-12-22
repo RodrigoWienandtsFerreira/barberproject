@@ -4,10 +4,13 @@ import { Button } from "./_components/ui/button";
 import { SearchIcon } from "lucide-react";
 import Image from "next/image";
 import { Card, CardContent } from "./_components/ui/card";
-import { Badge } from "@/@app/_components/ui/badge";
-import { Avatar, AvatarImage } from "@/@app/_components/ui/avatar";
+import { Badge } from "@/app/_components/ui/badge";
+import { Avatar, AvatarImage } from "@/app/_components/ui/avatar";
+import { db } from "./_lib/prisma";
+import BarbershopItem from "./_components/barbershop-item";
 
-const app = () => {
+const app = async () => {
+  const barbershop = await db.barbershop.findMany({});
   return (
     <div>
       <Header />
@@ -28,7 +31,10 @@ const app = () => {
             className="object-cover rounded-xl"
           />
         </div>
-        <Card className="mt-6">
+        <h2 className="text-sm font-bold uppercase text-gray-400 mt-6 mb-3">
+          Agendamentos
+        </h2>
+        <Card>
           <CardContent className="flex justify-between">
             <div className="flex flex-col gap-2 py-5">
               <Badge>Confirmado</Badge>
@@ -47,6 +53,14 @@ const app = () => {
             </div>
           </CardContent>
         </Card>
+        <h2 className="text-sm font-bold uppercase text-gray-400 mt-6 mb-3">
+          Recomendados
+        </h2>
+        <div className="flex gap-4 overflow-auto [&::-webkit-scrollbar]:hidden">
+          {barbershop.map((barbershop) => (
+            <BarbershopItem key={barbershop.id} barbershop={barbershop} />
+          ))}
+        </div>
       </div>
     </div>
   );
