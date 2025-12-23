@@ -4,6 +4,7 @@ import { ChevronLeftIcon, MapPinIcon, MenuIcon, StarIcon } from "lucide-react";
 import { Button } from "../../_components/ui/button";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import ServiceItem from "../../_components/service-item";
 
 interface BarbershopPageProps {
   params: Promise<{
@@ -16,6 +17,9 @@ const BarbershopPage = async ({ params }) => {
   const barbershop = await db.barbershop.findUnique({
     where: {
       id: id,
+    },
+    include: {
+      services: true,
     },
   });
 
@@ -68,6 +72,14 @@ const BarbershopPage = async ({ params }) => {
             Sobre nós
           </h2>
           <p className="text-sm text-justify">{barbershop?.description}</p>
+        </div>
+      </div>
+      <div className="p-5 space-y-3">
+        <h2 className="font-bold uppercase text-gray-400 text-xs ">Serviços</h2>
+        <div className="space-y-3">
+          {barbershop.services.map((service) => (
+            <ServiceItem key={service.id} service={service} />
+          ))}
         </div>
       </div>
     </div>
